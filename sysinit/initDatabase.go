@@ -2,6 +2,7 @@ package sysinit
 
 import (
 	//_ 导入models初始化
+	_ "github.com/alanwhen/integral/models"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	_ "github.com/go-sql-driver/mysql"
