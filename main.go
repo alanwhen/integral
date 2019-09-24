@@ -1,8 +1,8 @@
 package main
 
 import (
-	_ "github.com/alanwhen/integral/routers"
-	_ "github.com/alanwhen/integral/sysinit"
+	_ "github.com/alanwhen/education-mini/routers"
+	_ "github.com/alanwhen/education-mini/sysinit"
 	"github.com/astaxie/beego"
 )
 
