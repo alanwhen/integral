@@ -1,11 +1,7 @@
 package admin
 
-import (
-	"github.com/alanwhen/education-mini/controllers"
-)
-
 type ManageController struct {
-	BaseAdminController
+	BaseController
 }
 
 func (this *ManageController) Index() {

@@ -1,9 +1,9 @@
-package controllers
+package admin
 
 import (
 	"github.com/alanwhen/education-mini/enums"
+	"github.com/alanwhen/education-mini/models"
 	"github.com/astaxie/beego"
-	"github.com/yunnet/gardens/models"
 )
 
 type BaseController struct {
