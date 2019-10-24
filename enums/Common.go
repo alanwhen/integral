@@ -1,3 +1,16 @@
 package enums
 
-type JsonResultStatus bool
+type JsonResultCode int
+
+const (
+	JRCodeSuccess JsonResultCode = iota
+	JRCodeFailed
+	JRCode302 = 302
+	JRCode401 = 401
+)
+
+const (
+	Deleted = iota - 1
+	Disabled
+	Enabled
+)

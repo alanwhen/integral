@@ -1,13 +1,16 @@
 package models
 
-import "time"
+import (
+	"github.com/astaxie/beego/orm"
+	"time"
+)
 
 type SysMember struct {
 	Id            int       `orm:"column(member_id)" from:"Id"`
 	Username      string    `orm:"column(username)" from:"Username"`
 	Password      string    `orm:"column(password)" from:"Password"`
 	Email         string    `orm:"column(email)" from:"Email"`
-	GroupId       string    `orm:"column(group_id)" from:"GroupId"`
+	GroupId       int       `orm:"column(group_id)" from:"GroupId"`
 	OpenId        string    `orm:"column(open_id)" from:"OpenId"`
 	Avatar        string    `orm:"column(avatar)" from:"Avatar"`
 	RegIp         string    `orm:"column(reg_ip)" from:"RegIp"`
@@ -23,4 +26,42 @@ type SysMember struct {
 }
 
 type SysMemberQueryParam struct {
+	BaseQueryParam
+	UserName string
+	Mobile   string
+	Email    string
+}
+
+func init() {
+	orm.RegisterModel(new(SysMember))
+}
+
+func SysMemberTBName() string {
+	return "sys_member"
+}
+
+func (this *SysMember) TableName() string {
+	return SysMemberTBName()
+}
+
+func SysMemberPageList(params *SysMemberQueryParam) {
+	//query := orm.NewOrm().QueryTable(SysMemberTBName())
+	//data := make([]*SysMember, 0)
+	//
+	//sortOrder := "Id"
+	//switch params.Sort {
+	//case "Id":
+	//	sortOrder = "Id"
+	//}
+	//
+	//if params.Order == "desc" {
+	//	sortOrder = "-" + sortOrder
+	//}
+	//
+	//query = query.Filter("Username__istartswith", params.UserName)
+	//query = query.Filter("Mobile__istartswith", params.Mobile)
+	//query = query.Filter("Email_istartswith", params.Email)
+	//
+	//total, _ := query.Count()
+	//query.OrderBy(sortOrder).Limit()
 }

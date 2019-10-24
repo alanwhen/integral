@@ -3,9 +3,9 @@ package models
 import "github.com/alanwhen/education-mini/enums"
 
 type JsonResult struct {
-	Status enums.JsonResultStatus `json:"status"`
-	Tips   string                 `json:"tips"`
-	Data   interface{}            `json:"data"`
+	Code enums.JsonResultCode `json:"code"`
+	Msg  string               `json:"tips"`
+	Obj  interface{}          `json:"obj"`
 }
 
 type BaseQueryParam struct {
