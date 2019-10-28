@@ -1,6 +1,7 @@
 package models
 
 import (
+	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	"time"
 )
@@ -37,11 +38,30 @@ func init() {
 }
 
 func SysMemberTBName() string {
-	return "sys_member"
+	return beego.AppConfig.String("db_dt_prefix") + "sys_member"
 }
 
 func (this *SysMember) TableName() string {
 	return SysMemberTBName()
+}
+
+func SysMemberOne(id int) (*SysMember, error) {
+	o := orm.NewOrm()
+	m := SysMember{Id: id}
+	err := o.Read(&m)
+	if err != nil {
+		return nil, err
+	}
+	return &m, nil
+}
+
+func SysMemberOneByUserName(username string) (*SysMember, error) {
+	m := SysMember{}
+	err := orm.NewOrm().QueryTable(SysMemberTBName()).Filter("username", username).One(&m)
+	if err != nil {
+		return nil, err
+	}
+	return &m, nil
 }
 
 func SysMemberPageList(params *SysMemberQueryParam) {
