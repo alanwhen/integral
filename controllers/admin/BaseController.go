@@ -1,7 +1,9 @@
 package admin
 
 import (
+	"fmt"
 	"github.com/alanwhen/education-mini/enums"
+	"github.com/alanwhen/education-mini/helpers"
 	"github.com/alanwhen/education-mini/models"
 	"github.com/astaxie/beego"
 	"strings"
@@ -49,7 +51,7 @@ func (this *BaseController) checkLogin() {
 	}
 }
 
-func (this *BaseController) checkActionAuthor(ctrlName, Action string) bool {
+func (this *BaseController) checkActionAuthor(ctrlName, ActName string) bool {
 	if this.curUser.Id == 0 {
 		return false
 	}
@@ -61,7 +63,19 @@ func (this *BaseController) checkActionAuthor(ctrlName, Action string) bool {
 		if v.GroupId == 1 {
 			return true
 		}
+		//遍历用户所负责的资源列表
+		for i, _ := range v.ResourceUrlForList {
+			urlFor := strings.TrimSpace(v.ResourceUrlForList[i])
+			if len(urlFor) == 0 {
+				continue
+			}
+			str := strings.Split(urlFor, ",")
+			if len(str) > 0 && str[0] == (ctrlName+"."+ActName) {
+				return true
+			}
+		}
 	}
+	return false
 }
 
 func (this *BaseController) pageLogin() {
@@ -95,6 +109,28 @@ func (this *BaseController) jsonResult(code enums.JsonResultCode, msg string, ob
 	this.Data["json"] = res
 	this.ServeJSON()
 	this.StopRun()
+}
+
+func (this *BaseController) checkAuthor(ignores ...string) {
+	this.checkLogin()
+
+	for _, ignore := range ignores {
+		if ignore == this.actionName {
+			return
+		}
+	}
+
+	hasAuthor := this.checkActionAuthor(this.controllerName, this.actionName)
+	if !hasAuthor {
+		helpers.LogDebug(fmt.Sprintf("author control: path=%s.%s userid=%v  无权访问", this.controllerName, this.actionName, this.curUser.Id))
+
+		//如果没有权限
+		if this.Ctx.Input.IsAjax() {
+			this.jsonResult(enums.JRCode401, "无权访问", "")
+		} else {
+			this.pageError("无权访问")
+		}
+	}
 }
 
 func (this *BaseController) redirect(url string) {
