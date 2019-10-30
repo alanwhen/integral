@@ -1,7 +1,6 @@
 package models
 
 import (
-	"database/sql/driver"
 	"fmt"
 	"github.com/alanwhen/education-mini/helpers"
 	"github.com/astaxie/beego"
@@ -120,6 +119,7 @@ func resourceList2TreeGrid(list []*MemberResource) []*MemberResource {
 			result = resourceAddSons(item, list, result)
 		}
 	}
+	return result
 }
 
 func resourceAddSons(cur *MemberResource, list, result []*MemberResource) []*MemberResource {
