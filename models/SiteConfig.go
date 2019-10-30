@@ -3,6 +3,7 @@ package models
 import "github.com/astaxie/beego/orm"
 
 type SiteConfig struct {
+	Id          int
 	ConfigKey   string `orm:"column(config_key)" from:"ConfigKey"`
 	ConfigValue string `orm:"column(config_value)" from:"ConfigValue"`
 	ConfigDesc  string `orm:"column(config_desc)" from:"ConfigDesc"`
