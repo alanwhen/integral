@@ -2,17 +2,18 @@ package helpers
 
 import (
 	"crypto/md5"
-	"fmt"
+	"encoding/hex"
 	"math/rand"
 	"strconv"
 	"strings"
 	"time"
 )
 
+//将字符串加密成 md5
 func String2md5(str string) string {
-	data := []byte(str)
-	hash := md5.Sum(data)
-	return fmt.Sprintf("%x", hash)
+	h := md5.New()
+	h.Write([]byte(str))
+	return hex.EncodeToString(h.Sum(nil))
 }
 
 func RandomString(length int) string {
