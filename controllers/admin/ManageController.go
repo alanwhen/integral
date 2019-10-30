@@ -37,8 +37,9 @@ func (this *ManageController) Login() {
 				this.jsonResult(enums.JRCodeFailed, "用户被禁用，请联系管理员", "")
 			}
 			password = helpers.String2md5(helpers.String2md5(password) + user.Encrypt)
+
 			if user.Password != password {
-				this.jsonResult(enums.JRCodeFailed, "密码不正确", "")
+				this.jsonResult(enums.JRCodeFailed, "密码不正确", user.Password+"|"+password)
 			}
 
 			this.setMemberInfo2Session(user.Id)
