@@ -52,8 +52,8 @@ func (this *ManageController) Login() {
 	this.Data["pageTitle"] = beego.AppConfig.String("site.app") + beego.AppConfig.String("site.name") + " - 登录"
 	this.Data["siteVersion"] = beego.AppConfig.String("site.version")
 	this.LayoutSections = make(map[string]string)
-	this.LayoutSections["header"] = "home/login_header.html"
-	this.LayoutSections["footer"] = "home/login_footer.html"
+	this.LayoutSections["header"] = "admin/manage/login_header.html"
+	this.LayoutSections["footer"] = "admin/manage/login_footer.html"
 	this.setTpl("admin/manage/login.html", "shared/layout_base.html")
 }
 

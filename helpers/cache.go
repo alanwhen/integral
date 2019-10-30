@@ -4,16 +4,18 @@ import (
 	"bytes"
 	"encoding/gob"
 	"errors"
+	"time"
+
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/cache"
-	"time"
+	_ "github.com/astaxie/beego/cache/redis"
 )
 
 var cc cache.Cache
 
 func InitCache() {
 	host := beego.AppConfig.String("cache::redis_host")
-	//password := beego.AppConfig.String("cache::redis_password")
+	//passWord := beego.AppConfig.String("cache::redis_password")
 	var err error
 	defer func() {
 		if r := recover(); r != nil {
@@ -28,6 +30,7 @@ func InitCache() {
 	}
 }
 
+// SetCache
 func SetCache(key string, value interface{}, timeout int) error {
 	data, err := Encode(value)
 	if err != nil {
