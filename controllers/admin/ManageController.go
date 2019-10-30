@@ -33,7 +33,7 @@ func (this *ManageController) Login() {
 		}
 		user, err := models.SysMemberOneByUserName(username)
 		if user != nil && err == nil {
-			if user.IfLock == enums.Disabled {
+			if user.IfLock == 1 {
 				this.jsonResult(enums.JRCodeFailed, "用户被禁用，请联系管理员", "")
 			}
 			password = helpers.String2md5(helpers.String2md5(password) + user.Encrypt)

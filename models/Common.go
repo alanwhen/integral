@@ -4,7 +4,7 @@ import "github.com/alanwhen/education-mini/enums"
 
 type JsonResult struct {
 	Code enums.JsonResultCode `json:"code"`
-	Msg  string               `json:"tips"`
+	Msg  string               `json:"msg"`
 	Obj  interface{}          `json:"obj"`
 }
 
