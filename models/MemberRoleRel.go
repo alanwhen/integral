@@ -6,6 +6,7 @@ import (
 )
 
 type MemberRoleRel struct {
+	Id         int
 	MemberRole *MemberRole `orm:"rel(fk)"`
 	SysMember  *SysMember  `orm:"rel(fk)"`
 }
