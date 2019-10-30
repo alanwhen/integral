@@ -1,0 +1,19 @@
+<!-- 用于列表页 -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="renderer" content="webkit">
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>{{.pageTitle}}</title>
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+        {{template "shared/global_css.html"}}
+        {{.header}}
+    </head>
+
+    <body>
+    {{.LayoutContent}}
+    {{template "shared/global_js.html"}}
+    {{.footer}}
+    </body>
+</html>

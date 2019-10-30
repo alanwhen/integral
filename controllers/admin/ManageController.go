@@ -64,7 +64,13 @@ func (this *ManageController) Logout() {
 }
 
 func (this *ManageController) Index() {
+	this.Data["pageTitle"] = "首页"
 
+	this.checkLogin()
+	this.setTpl("admin/manage/index.html")
+	this.LayoutSections = make(map[string]string)
+	this.LayoutSections["header"] = "admin/manage/index_header.html"
+	this.LayoutSections["footer"] = "admin/manage/index_footer.html"
 }
 
 func (this *ManageController) ReloadCache() {

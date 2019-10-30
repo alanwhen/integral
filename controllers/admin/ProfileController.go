@@ -1,11 +1,7 @@
 package admin
 
-import (
-	"github.com/alanwhen/education-mini/controllers"
-)
-
 type ProfileController struct {
-	BaseAdminController
+	BaseController
 }
 
 func (this *ProfileController) changePwd() {

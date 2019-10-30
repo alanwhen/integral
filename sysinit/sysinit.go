@@ -1,7 +1,7 @@
 package sysinit
 
 import (
-	"github.com/alanwhen/integral/helpers"
+	"github.com/alanwhen/education-mini/helpers"
 	"github.com/astaxie/beego"
 )
 
