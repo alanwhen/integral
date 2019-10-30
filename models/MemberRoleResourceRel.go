@@ -3,11 +3,14 @@ package models
 import (
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
+	"time"
 )
 
 type MemberRoleResourceRel struct {
+	Id             int
 	MemberRole     *MemberRole     `orm:"rel(fk)"`
 	MemberResource *MemberResource `orm:"rel(fk)"`
+	Created        time.Time       `orm:"auto_now_add;type(datetime)"`
 }
 
 func init() {

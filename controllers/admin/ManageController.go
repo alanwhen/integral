@@ -37,17 +37,30 @@ func (this *ManageController) Login() {
 				this.jsonResult(enums.JRCodeFailed, "用户被禁用，请联系管理员", "")
 			}
 			password = helpers.String2md5(helpers.String2md5(password) + user.Encrypt)
-		} else {
+			if user.Password != password {
+				this.jsonResult(enums.JRCodeFailed, "密码不正确", "")
+			}
 
+			this.setMemberInfo2Session(user.Id)
+
+			this.jsonResult(enums.JRCodeSuccess, "登录成功", "")
+		} else {
+			this.jsonResult(enums.JRCodeFailed, "用户不存在", "")
 		}
 
 	}
 	this.Data["pageTitle"] = beego.AppConfig.String("site.app") + beego.AppConfig.String("site.name") + " - 登录"
 	this.Data["siteVersion"] = beego.AppConfig.String("site.version")
 	this.LayoutSections = make(map[string]string)
-	this.LayoutSections["header"] = "home/header.html"
-	this.LayoutSections["footer"] = "home/footer.html"
-	this.setTpl("")
+	this.LayoutSections["header"] = "home/login_header.html"
+	this.LayoutSections["footer"] = "home/login_footer.html"
+	this.setTpl("admin/manage/login.html", "shared/layout_base.html")
+}
+
+func (this *ManageController) Logout() {
+	user := models.SysMember{}
+	this.SetSession("sys_member", user)
+	this.pageLogin()
 }
 
 func (this *ManageController) Index() {
@@ -64,4 +77,9 @@ func (this *ManageController) appConf() {
 
 func (this *ManageController) addConf() {
 
+}
+
+func (this *ManageController) Error() {
+	this.Data["error"] = this.GetString(":error")
+	this.setTpl("manage/error.html", "shared/layout_pull_box.html")
 }

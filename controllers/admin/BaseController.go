@@ -133,6 +133,19 @@ func (this *BaseController) checkAuthor(ignores ...string) {
 	}
 }
 
+func (this *BaseController) setMemberInfo2Session(memberId int) error {
+	m, err := models.SysMemberOne(memberId)
+	if err != nil {
+		return err
+	}
+	resourceList := models.ResourceTreeGridByMemberId(memberId, 1000)
+	for _, item := range resourceList {
+		m.ResourceUrlForList = append(m.ResourceUrlForList, strings.TrimSpace(item.UrlFor))
+	}
+	this.SetSession("sys_member", *m)
+	return nil
+}
+
 func (this *BaseController) redirect(url string) {
 	this.Redirect(url, 302)
 	this.StopRun()

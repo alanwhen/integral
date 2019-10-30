@@ -11,7 +11,7 @@ type MemberRoleQueryParam struct {
 
 type MemberRole struct {
 	Id                    int                      `orm:"column(role_id)" form:"Id"`
-	RoleName              string                   `orm:"column(role_name)" from:"role_name"`
+	RoleName              string                   `orm:"column(role_name)" from:"Role"`
 	ListOrder             int                      `orm:"column(list_order)" form:"ListOrder"`
 	MemberRoleResourceRel []*MemberRoleResourceRel `orm:"reverse(many)" json:"-"`
 	MemberRoleRel         []*MemberRoleRel         `orm:"reverse(many)" json:"-"`
