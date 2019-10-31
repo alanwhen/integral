@@ -74,6 +74,18 @@ func (this *ManageController) Index() {
 	this.LayoutSections["footer"] = "admin/manage/index_footer.html"
 }
 
+func (this *ManageController) GetCustomerForMeter() {
+	before := time.Now().Unix()
+	key := "GetCustomerForMeter"
+	var data string
+	if err := helpers.GetCache(key, &data); err == nil {
+		after := time.Now().Unix()
+		beego.Info(fmt.Sprintf("use redis cache: GetCustomerZone spend: %d ns", after-before))
+		this.jsonResult(enums.JRCodeSuccess, "", data)
+	}
+
+}
+
 func (this *ManageController) ReloadCache() {
 
 }
