@@ -3,6 +3,7 @@ package admin
 import (
 	"fmt"
 	"github.com/alanwhen/education-mini/enums"
+	"github.com/alanwhen/education-mini/helpers"
 	"github.com/alanwhen/education-mini/models"
 	"github.com/astaxie/beego/orm"
 	"io/ioutil"
@@ -87,7 +88,7 @@ func (this *ResourceController) UrlFor2Link(src []*models.MemberResource) {
 
 func (this *ResourceController) Edit() {
 	//权限
-	this.checkAuthor()
+	//this.checkAuthor()
 
 	if this.Ctx.Request.Method == "POST" {
 		this.Save()
@@ -126,13 +127,16 @@ func (this *ResourceController) Save() {
 	var err error
 	o := orm.NewOrm()
 	parent := &models.MemberResource{}
-	m := &models.MemberResource{}
+	m := models.MemberResource{}
 	parentId, _ := this.GetInt("Parent", 0)
 
+	//获取form里的值
 	if err = this.ParseForm(&m); err != nil {
+		helpers.LogDebug(err)
 		this.jsonResult(enums.JRCodeFailed, "获取数据失败", m.Id)
 	}
 
+	//获取父节点
 	if parentId > 0 {
 		parent, err = models.MemberResourceOne(parentId)
 		if err == nil && parent != nil {
@@ -148,6 +152,7 @@ func (this *ResourceController) Save() {
 		} else {
 			this.jsonResult(enums.JRCodeFailed, "添加失败", m.Id)
 		}
+
 	} else {
 		if _, err = o.Update(&m); err == nil {
 			this.jsonResult(enums.JRCodeSuccess, "编辑成功", m.Id)
@@ -189,7 +194,7 @@ func (this *ResourceController) Select() {
 		case 1:
 			{
 				role := models.MemberRole{Id: destval}
-				o.LoadRelated(&role, "RoleResourceRel")
+				o.LoadRelated(&role, "MemberRoleResourceRel")
 				for _, item := range role.MemberRoleResourceRel {
 					selectedIds = append(selectedIds, strconv.Itoa(item.MemberResource.Id))
 				}

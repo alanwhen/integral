@@ -81,7 +81,7 @@ func ResourceTreeGrid4Parent(id int) []*MemberResource {
 }
 
 func ResourceTreeGridByMemberId(memberId, maxrtype int) []*MemberResource {
-	cacheKey := fmt.Sprintf("rms_ResourceTreeGridByMemberId_%v_%v", memberId, maxrtype)
+	cacheKey := fmt.Sprintf("eds_ResourceTreeGridByMemberId_%v_%v", memberId, maxrtype)
 	var list []*MemberResource
 	if err := helpers.GetCache(cacheKey, &list); err == nil {
 		return list

@@ -1,4 +1,4 @@
-var eds = function () {
+var rms = function () {
     function init() {
 
     }
@@ -8,7 +8,7 @@ var eds = function () {
         if (!url) return;
         $.sdpost(url, {}, function (res) {
             if (res.code === 0) {
-                var $pageSidebar = $(options.sideBarBox);
+                var $pageSidebar = $(options.slideBarBox);
                 if ($pageSidebar.length === 0) {
                     console.log("menu box is null");
                     return;
@@ -23,7 +23,7 @@ var eds = function () {
                 }).each(function (i, e) {
                     if (e.Rtype === 1) {
                         //递归加载子节点
-                        html.push(showSiderBarSon(e, data));
+                        html.push(showSideBarSon(e, data));
                     } else if (e.Rtype === 0) {
                         //如果是区域，先添加header
                         html.push('<li class="header" > ' + e.Name + ' </li>');
@@ -161,6 +161,13 @@ var eds = function () {
         }
     };
 
+    function getIcon(icon) {
+        if (!icon || icon.length === 0) {
+            return "fa fa-circle-o"
+        }
+        return icon;
+    }
+
     return {
         init: init,
         //页面左侧菜单初始化
@@ -175,7 +182,7 @@ var eds = function () {
 }();
 
 jQuery(document).ready(function () {
-    eds.init()
+    rms.init()
 });
 
 // NProgress

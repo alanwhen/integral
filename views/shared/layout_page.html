@@ -53,7 +53,7 @@
                                         <a href="#">
                                             <div class="pull-left">
                                                 <!-- User Image -->
-                                                <img src="/static/upload/1.jpg" class="img-circle" alt="User Image">
+                                                <img src="/statics/upload/1.jpg" class="img-circle" alt="User Image">
                                             </div>
                                             <!-- Message title and timestamp -->
                                             <h4>
@@ -205,9 +205,9 @@
 <script>
     $(function () {
         //页面左侧菜单初始化
-        eds.pageSidebarInit({
+        rms.pageSidebarInit({
             slideBarBox:'#pageSidebar',                         //菜单容器
-            url:'{{urlfor "ResourceController.UserMenuTree"}}', //菜单数据地址
+            url:'{{ urlfor "ResourceController.UserMenuTree"}}', //菜单数据地址
             cur:'{{.activeSidebarUrl}}'                         //当前激活的菜单地址
         });
     });
