@@ -68,6 +68,7 @@ func (this *ManageController) Index() {
 	this.Data["pageTitle"] = "首页"
 
 	this.checkLogin()
+	this.Data["activeSidebarUrl"] = this.URLFor(this.controllerName + "." + this.actionName)
 	this.setTpl("admin/manage/index.html")
 	this.LayoutSections = make(map[string]string)
 	this.LayoutSections["header"] = "admin/manage/index_header.html"

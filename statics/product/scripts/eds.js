@@ -5,6 +5,7 @@ var eds = function () {
 
     function pageSidebarInit(options) {
         var url = options.url;
+        if (!url) return;
         $.sdpost(url, {}, function (res) {
             if (res.code === 0) {
                 var $pageSidebar = $(options.sideBarBox);
