@@ -24,6 +24,12 @@ func init() {
 	beego.Router("/admin/resource/edit/?:id", &admin.ResourceController{}, "Get,Post:Edit")
 	beego.Router("/admin/resource/parent", &admin.ResourceController{}, "Post:ParentTreeGrid")
 	beego.Router("/admin/resource/delete", &admin.ResourceController{}, "Post:Delete")
+	//member
+	beego.Router("/admin/member/profile", &admin.MemberController{}, "Get:Profile")
+	beego.Router("/admin/member/index", &admin.MemberController{}, "*:Index")
+	beego.Router("/admin/member/dataGrid", &admin.MemberController{}, "POST:DataGrid")
+	beego.Router("/admin/member/edit/?:id", &admin.MemberController{}, "Get,Post:Edit")
+	beego.Router("/admin/member/delete", &admin.MemberController{}, "Post:Delete")
 
 	beego.Router("admin/resource/select", &admin.ResourceController{}, "Get:Select")
 	beego.Router("admin/resource/chooseIcon", &admin.ResourceController{}, "Get:ChooseIcon")

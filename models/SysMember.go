@@ -67,24 +67,25 @@ func SysMemberOneByUserName(username string) (*SysMember, error) {
 	return &m, nil
 }
 
-func SysMemberPageList(params *SysMemberQueryParam) {
-	//query := orm.NewOrm().QueryTable(SysMemberTBName())
-	//data := make([]*SysMember, 0)
-	//
-	//sortOrder := "Id"
-	//switch params.Sort {
-	//case "Id":
-	//	sortOrder = "Id"
-	//}
-	//
-	//if params.Order == "desc" {
-	//	sortOrder = "-" + sortOrder
-	//}
-	//
-	//query = query.Filter("Username__istartswith", params.UserName)
-	//query = query.Filter("Mobile__istartswith", params.Mobile)
-	//query = query.Filter("Email_istartswith", params.Email)
-	//
-	//total, _ := query.Count()
-	//query.OrderBy(sortOrder).Limit()
+func SysMemberPageList(params *SysMemberQueryParam) ([]*SysMember, int64) {
+	query := orm.NewOrm().QueryTable(SysMemberTBName())
+	data := make([]*SysMember, 0)
+
+	sortOrder := "Id"
+	switch params.Sort {
+	case "Id":
+		sortOrder = "Id"
+	}
+
+	if params.Order == "desc" {
+		sortOrder = "-" + sortOrder
+	}
+
+	query = query.Filter("Username__istartswith", params.UserName)
+	query = query.Filter("Mobile__istartswith", params.Mobile)
+	query = query.Filter("Email__istartswith", params.Email)
+
+	total, _ := query.Count()
+	query.OrderBy(sortOrder).Limit(params.Limit, params.Offset).All(&data)
+	return data, total
 }
