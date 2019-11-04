@@ -116,7 +116,7 @@
                 }
             },
             submitHandler: function (form) {
-                var url = '{{ urlfor "UserCenterController.BasicInfoSave"}}';
+                var url = '{{ urlfor "MemberController.BasicInfoSave"}}';
                 var params = $thisForm.serialize();
                 $.sdpost(url, params, function (re) {
                     if (re.code === 0) {

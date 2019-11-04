@@ -22,7 +22,7 @@ func (this *MemberController) Prepare() {
 }
 
 func (this *MemberController) Index() {
-	this.Data["pageTitle"] = "用户管理"
+	this.Data["pageTitle"] = "管理列表"
 
 	this.Data["showMoreQuery"] = true
 
@@ -189,6 +189,15 @@ func (this *MemberController) PasswordSave() {
 
 	if newPwd != confirmPwd {
 		this.jsonResult(enums.JRCodeFailed, "两次输入密码不一致", "")
+	}
+
+	oM.Password = helpers.String2md5(helpers.String2md5(newPwd + oM.Encrypt))
+	o := orm.NewOrm()
+	if _, err := o.Update(oM); err != nil {
+		this.jsonResult(enums.JRCodeFailed, "保存失败", oM.Id)
+	} else {
+		this.setMemberInfo2Session(Id)
+		this.jsonResult(enums.JRCodeSuccess, "保存成功", oM.Id)
 	}
 }
 

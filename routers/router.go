@@ -9,6 +9,7 @@ func init() {
 	beego.Router("/admin/manage/login", &admin.ManageController{}, "*:Login")
 	beego.Router("/admin/manage/index", &admin.ManageController{}, "Get:Index")
 	beego.Router("/admin/manage/cache", &admin.ManageController{}, "Get:ReloadCache")
+	beego.Router("/admin/manage/logout", &admin.ManageController{}, "*:Logout")
 
 	//RoleController
 	beego.Router("/admin/role/index", &admin.RoleController{}, "*:Index")
@@ -30,6 +31,14 @@ func init() {
 	beego.Router("/admin/member/dataGrid", &admin.MemberController{}, "POST:DataGrid")
 	beego.Router("/admin/member/edit/?:id", &admin.MemberController{}, "Get,Post:Edit")
 	beego.Router("/admin/member/delete", &admin.MemberController{}, "Post:Delete")
+	beego.Router("/admin/member/passwordSave", &admin.MemberController{}, "POST:PasswordSave")
+	beego.Router("/admin/member/uploadImage", &admin.MemberController{}, "POST:UploadImage")
+	beego.Router("/admin/member/baseInfoSave", &admin.MemberController{}, "POST:BasicInfoSave")
+	//user
+	beego.Router("/admin/user/index", &admin.UserController{}, "*:Index")
+	beego.Router("/admin/user/edit/?:id", &admin.UserController{}, "Get,Post:Edit")
+	beego.Router("/admin/user/delete", &admin.UserController{}, "Post:Delete")
+	beego.Router("/admin/user/dataGrid", &admin.UserController{}, "Post:DataGrid")
 
 	beego.Router("admin/resource/select", &admin.ResourceController{}, "Get:Select")
 	beego.Router("admin/resource/chooseIcon", &admin.ResourceController{}, "Get:ChooseIcon")

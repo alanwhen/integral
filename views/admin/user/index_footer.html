@@ -2,22 +2,19 @@
 
 <script>
     var $dataGrid = $('#dataGrid');
-    var $searchForm = $("#searchForm");
+    var $searchForm = $('#searchForm');
 
-    //高亮显示id
-    var highlightPk = null;
-    //初始化加载
+    var highlightPk = 99;
+
     $(function () {
         pageInit();
     });
 
-    //初始化页面
     function pageInit() {
-        //从cookie加载查询条件，传入参数为form id
-        sdtheme.loadSearchText('searchForm');
-        //初始化表格
+        sdtheme.loadSearchText("searchForm");
+        //
         dataGridInit();
-        //搜索
+        //
         $("#btnSearch").on("click", function (e) {
             refreshToFirstPage();
         });
@@ -27,7 +24,6 @@
             $('input', $searchForm).val('');
             refreshToFirstPage();
         });
-
         //绑定加载成功的事件，成功后高亮显示当前项
         $dataGrid.on('load-success.bs.table', function () {
             if (highlightPk !== null && typeof highlightPk !== 'undefined') {
@@ -37,7 +33,7 @@
             highlightPk = null;
         });
         //保持搜索条件面板状态
-        sdtheme.searchPanelStatusInit('searchpanelbtn');
+        sdtheme.searchPanelStatusInit('searchPanelBtn');
     }
 
     //刷新当前页
@@ -56,19 +52,21 @@
         $.cookie('dataGrid.bs.table.pageNumber', 1, {expires: 1});
     }
 
-    var editable4Seq = rms.getEditableParam('{{urlfor "RoleController.UpdateSeq"}}', null, true);
-
     //bootstrap table data init
     function dataGridInit() {
         $dataGrid.bootstrapTable({
-            url: '{{ urlfor "RoleController.DataGrid"}}',
+            url: '{{ urlfor "UserController.DataGrid"}}',
             method: 'post',
             sidePagination: 'server', //服务器端用 server
             idField: 'Id',
             queryParamsType: 'limit',
             queryParams: function (params) {
                 //params的自带参数类型由queryParamsType决定
-                params.NameLike = $('.searchForm input[name="Name"]').val();
+                // params.UserNameLike =$.trim($('.searchForm input[name="Username"]').val());
+                params.RealNameLike = $.trim($('.searchForm input[name="FullName"]').val());
+                params.Mobile = $.trim($('.searchForm input[name="Mobile"]').val());
+                // params.Email = $.trim($('.searchForm input[name="Email"]').val());
+                // params.SearchStatus = $('.searchForm select[name="Status"]').selectpicker('val');
                 return params;
             },
             pagination: true,
@@ -83,7 +81,7 @@
             classes: 'table table-bordered table-hover',
             undefinedText: '',
             sortName: 'Id',
-            sortOrder: 'asc',
+            sortOrder: 'desc',
             stickyHeader: true,
             resizable: true,
 
@@ -101,40 +99,25 @@
                 align: 'center',
                 sortable: true
             }, {
-                field: 'RoleName',
-                title: '名称',
-                align: 'center',
-                formatter: formatterWapBySpan,
-                cellStyle: function (value, row, index, field) {
-                    return {classes: 'ellipsis'};
-                }
+                field: 'RealName',
+                title: '姓名'
             }, {
-                field: 'ListOrder',
-                title: '顺序',
+                field: 'Mobile',
+                title: '手机号'
+            }, /*{
+                field: 'IfLock',
+                title: '状态',
+                align: 'center',
                 width: '100px',
-                align: 'center',
                 sortable: true,
-                editable: editable4Seq
-            }, {
+                formatter:sdtheme.showEnable
+            },*/ {
                 field: 'operate',
                 title: '操作',
-                width: '150px',
                 align: 'center',
-                formatter: function (value, row, index) {
-                    var ret = [];
-                    ret.push('<div class="btn-group">');
-
-                    if ('{{.canEdit}}' === 'true') {
-                        ret.push('<button class="btn btn-primary btn-xs"  onclick="EditFun(' + row.Id + ')">' +
-                                '<i class="fa fa-pencil"></i> 编辑</button>');
-                    }
-                    if ('{{.canAllocate}}' === 'true') {
-                        ret.push('<button class="btn btn-info btn-xs"  onclick="AllocateFun(' + row.Id + ')">' +
-                                '<i class="fa fa-th"></i> 分配</button>');
-                    }
-                    ret.push('</div>');
-                    return ret.join('');
-                }
+                width: '100px',
+                visible: isVisible(),
+                formatter: formatterOperate
             }],
             onLoadSuccess: function (data) {
                 layer.closeAll('loading');
@@ -172,6 +155,11 @@
         });
     }
 
+    function GetStatusText(value) {
+        var texts = [{ Text: '锁定', Value: 1 }, { Text: '启用', Value: 0 } ]
+        return sdtheme.showEnum(value, texts);
+    }
+
     ///用一个带有title值的span将值包裹起来
     function formatterWapBySpan(value, row, index) {
         if (value !== null) {
@@ -180,12 +168,32 @@
         return "";
     }
 
-    function EditFun(Id) {
-        var title = '添加角色';
-        if (Id > 0) {
-            title = "编辑角色"
+    //格式化操作字段中的编辑
+    function formatterOperate(value, row, index) {
+        var html = [];
+        html.push('<div class="btn-group">');
+        if ('{{.canEdit}}' === 'true') {
+            html.push('<button class="btn btn-primary btn-xs" onclick="EditFun(' + row.Id + ')">' +
+                    '<i class="fa fa-pencil"></i> 编辑</button>');
         }
-        var url = '{{ urlfor "RoleController.Edit"}}' + '/' + Id;
+        html.push('</div>');
+        return html.join('');
+    }
+
+    function isVisible() {
+        if ('{{.canEdit}}' === 'true') {
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    function EditFun(Id) {
+        var title = '添加用户';
+        if (Id > 0) {
+            title = "编辑用户"
+        }
+        var url = '{{ urlfor "UserController.Edit"}}' + '/' + Id;
         layer.open({
             type: 2,
             title: title,
@@ -193,7 +201,7 @@
             shade: 0.2,
             maxmin: true,
             shift: 1,
-            area: ['800px', '400px'],
+            area: ['1000px', '600px'],
             content: url,
             btn: ['保存', '关闭'],
             yes: function (index, layero) {
@@ -204,64 +212,30 @@
     }
 
     function DeleteFun() {
-        var url = '{{ urlfor "RoleController.Delete"}}';
-        var rows = $dataGrid.bootstrapTable("getSelections");
+        var url = '{{ urlfor "UserController.Delete"}}';
+        var rows = $dataGrid.bootstrapTable("getSelections")
         if (rows.length === 0) {
             layer.alert('请选择想要删除的项', {icon: 0, title: '提示'});
             return;
         }
+
         var ids = [];
         $(rows).each(function (i, e) {
             ids.push(e.Id);
         });
+
         layer.confirm('您是否要删除所选的项？', {
             btn: ['是', '否'], icon: 3, title: '请确认'
         }, function () {
-            var params = {ids: ids.join(',')};
+            var params = {ids:ids.join(',')};
             $.sdpost(url, params, function (re) {
-                if (re.code === 0) {
+                if (re.code == 0) {
                     layer.msg(re.msg, {icon: 1, title: '成功'});
                     refresh();
                 } else {
                     layer.alert(re.msg, {icon: 2, title: "失败"});
                 }
             });
-        });
-    }
-
-    function AllocateFun(Id) {
-        var url = '{{ urlfor "ResourceController.Select"}}' + '?desttype=1&destval=' + Id;
-        var urlAllocate = '{{ urlfor "RoleController.Allocate"}}';
-
-        layer.open({
-            type: 2,
-            title: '选择资源',
-            shadeClose: false,
-            shade: 0.2,
-            maxmin: true,
-            shift: 1,
-            area: ['1000px', '95%'],
-            content: url,
-            btn: ['保存', '关闭'],
-            yes: function (index, layero) {
-                var iframeWin = window[layero.find('iframe')[0]['name']];
-                var selectedids = iframeWin.getSelections();
-
-                if (selectedids.length > 0) {
-                    var params = {id: Id, ids: selectedids.join(',')};
-                    $.sdpost(urlAllocate, params, function (re) {
-                        if (re.code === 0) {
-                            refresh(Id);
-                            layer.msg(re.msg);
-                            layer.close(index);
-                        } else {
-                            layer.alert(re.msg, {icon: 2, title: '错误'});
-                        }
-                    });
-                } else {
-                    layer.alert("请选择资源", {icon: 0, title: '提示'});
-                }
-            }
         });
     }
 </script>
