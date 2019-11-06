@@ -24,7 +24,7 @@ func (this *UserController) Prepare() {
 func (this *UserController) Index() {
 	this.Data["pageTitle"] = "用户列表"
 	this.Data["showMoreQuery"] = true
-	this.Data["activeSidebarUrl"] = this.URLFor(this.controllerName + "/" + this.actionName)
+	this.Data["activeSidebarUrl"] = this.URLFor(this.controllerName + "." + this.actionName)
 
 	this.setTpl("admin/user/index.html")
 	this.LayoutSections = make(map[string]string)
@@ -64,10 +64,10 @@ func (this *UserController) Edit() {
 
 	}
 	this.Data["m"] = m
-	this.setTpl("admin/member/edit.html", "shared/layout_pull_box.html")
+	this.setTpl("admin/user/edit.html", "shared/layout_pull_box.html")
 
 	this.LayoutSections = make(map[string]string)
-	this.LayoutSections["footer"] = "admin/member/edit_footer.html"
+	this.LayoutSections["footer"] = "admin/user/edit_footer.html"
 }
 
 func (this *UserController) Save() {

@@ -11,10 +11,11 @@
     });
 
     function pageInit() {
+        //从cookie加载查询条件，传入参数为form_id
         sdtheme.loadSearchText("searchForm");
-        //
+        //初始化表格
         dataGridInit();
-        //
+        //搜索
         $("#btnSearch").on("click", function (e) {
             refreshToFirstPage();
         });
@@ -205,8 +206,9 @@
             content: url,
             btn: ['保存', '关闭'],
             yes: function (index, layero) {
+                console.log('layero_iframe:', layero.find('iframe')[0]['name']);
                 var iframeWin = window[layero.find('iframe')[0]['name']];
-                iframeWin.FormSubmit();
+                if (iframeWin) iframeWin.FormSubmit();
             }
         });
     }
