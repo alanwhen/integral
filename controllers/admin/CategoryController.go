@@ -1,5 +1,10 @@
 package admin
 
+import (
+	"github.com/alanwhen/education-mini/enums"
+	"github.com/alanwhen/education-mini/models"
+)
+
 type CategoryController struct {
 	BaseController
 }
@@ -26,5 +31,7 @@ func (this *CategoryController) Index() {
 }
 
 func (this *CategoryController) TreeGrid() {
+	tree := models.ArticleCategoryTreeGrid()
 
+	this.jsonResult(enums.JRCodeSuccess, "", tree)
 }
