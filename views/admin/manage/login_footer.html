@@ -50,11 +50,15 @@
             },
 
             submitHandler: function (form) {
-                var url = '{{ urlfor "ManageController.Login"}}';
+                var url = $("#thisForm").attr("action");
                 var params = $thisForm.serialize();
                 $.sdpost(url, params, function (re) {
                     if (re.code === 0) {
-                        window.location.href='{{ urlfor "ManageController.Index"}}'
+                        if (re.obj.redirect) {
+                            window.location.href = re.obj.redirect
+                        } else {
+                            window.location.href='{{ urlfor "ManageController.Index"}}'
+                        }
                     } else {
                         layer.alert(re.msg, { icon: 2, title: '失败' })
                     }

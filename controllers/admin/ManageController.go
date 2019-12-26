@@ -43,8 +43,11 @@ func (this *ManageController) Login() {
 			}
 
 			this.setMemberInfo2Session(user.Id)
-
-			this.jsonResult(enums.JRCodeSuccess, "登录成功", "")
+			obj := make(map[string]string)
+			if this.Input().Get("url") != "" {
+				obj["redirect"] = this.Input().Get("url")
+			}
+			this.jsonResult(enums.JRCodeSuccess, "登录成功", obj)
 		} else {
 			this.jsonResult(enums.JRCodeFailed, "用户不存在", "")
 		}
@@ -52,6 +55,7 @@ func (this *ManageController) Login() {
 	}
 	this.Data["pageTitle"] = beego.AppConfig.String("site.app") + beego.AppConfig.String("site.name") + " - 登录"
 	this.Data["siteVersion"] = beego.AppConfig.String("site.version")
+	this.Data["currentUrl"] = this.Ctx.Request.RequestURI
 	this.LayoutSections = make(map[string]string)
 	this.LayoutSections["header"] = "admin/manage/login_header.html"
 	this.LayoutSections["footer"] = "admin/manage/login_footer.html"

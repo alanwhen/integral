@@ -5,7 +5,7 @@
         <p class="login-box-msg"> version: {{.siteVersion}}</p>
         <div class="clearfix"></div>
 
-        <form id="thisForm">
+        <form id="thisForm" role="form" action="{{.currentUrl}}">
             <div class="form-group has-feedback">
                 <input type="text" class="form-control" name="username" placeholder="用户名">
                 <span class="glyphicon glyphicon-user form-control-feedback"></span>

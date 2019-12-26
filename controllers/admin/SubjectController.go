@@ -10,35 +10,38 @@ import (
 	"strings"
 )
 
-type StudentController struct {
+type SubjectController struct {
 	BaseController
 }
 
-func (this *StudentController) Prepare() {
+func (this *SubjectController) Prepare() {
 	this.BaseController.Prepare()
-
-	this.checkLogin()
+	this.checkAuthor("DataGrid")
 }
 
-func (this *StudentController) Index() {
-	this.Data["pageTitle"] = "学籍列表"
+func (this *SubjectController) Index() {
+	this.Data["pageTitle"] = "学校管理"
+
 	this.Data["showMoreQuery"] = true
 	this.Data["activeSidebarUrl"] = this.URLFor(this.controllerName + "." + this.actionName)
 
-	this.setTpl("admin/student/index.html")
+	this.setTpl("admin/subject/index.html")
 	this.LayoutSections = make(map[string]string)
-	this.LayoutSections["header"] = "admin/student/index_header.html"
-	this.LayoutSections["footer"] = "admin/student/index_footer.html"
+	this.LayoutSections["header"] = "admin/subject/index_header.html"
+	this.LayoutSections["footer"] = "admin/subject/index_footer.html"
 
 	this.Data["canEdit"] = this.checkActionAuthor(this.controllerName, "Edit")
 	this.Data["canDelete"] = this.checkActionAuthor(this.controllerName, "Delete")
 }
 
-func (this *StudentController) DataGrid() {
-	var params models.StudentQueryParam
+func (this *SubjectController) DataGrid() {
+	//直接反序化获取json格式的requestbody里的值（要求配置文件里 copyrequestbody=true）
+	var params models.SubjectQueryParam
 	json.Unmarshal(this.Ctx.Input.RequestBody, &params)
 
-	data, total := models.StudentPageList(&params)
+	data, total := models.SubjectPageList(&params)
+
+	//定义返回的数据结构
 	result := make(map[string]interface{})
 	result["total"] = total
 	result["rows"] = data
@@ -47,13 +50,13 @@ func (this *StudentController) DataGrid() {
 	this.ServeJSON()
 }
 
-func (this *StudentController) Edit() {
+func (this *SubjectController) Edit() {
 	if this.Ctx.Request.Method == "POST" {
 		this.Save()
 	}
 
 	Id, _ := this.GetInt(":id", 0)
-	m := models.Student{Id: Id}
+	m := models.Subject{Id: Id}
 	if Id > 0 {
 		o := orm.NewOrm()
 		err := o.Read(&m)
@@ -65,14 +68,14 @@ func (this *StudentController) Edit() {
 	}
 
 	this.Data["m"] = m
-	this.setTpl("admin/student/edit.html", "shared/layout_pull_box.html")
+	this.setTpl("admin/school/edit.html", "shared/layout_pull_box.html")
 	this.LayoutSections = make(map[string]string)
-	this.LayoutSections["footer"] = "admin/student/edit_footer.html"
+	this.LayoutSections["footer"] = "admin/school/edit_footer.html"
 }
 
-func (this *StudentController) Save() {
+func (this *SubjectController) Save() {
 	var err error
-	m := models.Student{}
+	m := models.Subject{}
 
 	if err = this.ParseForm(&m); err != nil {
 		this.jsonResult(enums.JRCodeFailed, "获取数据失败", m.Id)
@@ -108,7 +111,7 @@ func (this *StudentController) Save() {
 	}
 }
 
-func (this *StudentController) Delete() {
+func (this *SubjectController) Delete() {
 	strS := this.GetString("ids")
 	ids := make([]int, 0, len(strS))
 	for _, str := range strings.Split(strS, ",") {
@@ -117,7 +120,7 @@ func (this *StudentController) Delete() {
 		}
 	}
 
-	if num, err := models.StudentBatchDelete(ids); err == nil {
+	if num, err := models.SubjectBatchDelete(ids); err == nil {
 		this.jsonResult(enums.JRCodeSuccess, fmt.Sprintf("成功删除 %d 项", num), 0)
 	} else {
 		this.jsonResult(enums.JRCodeFailed, "删除失败", 0)
