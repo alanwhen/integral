@@ -1,0 +1,49 @@
+<form id="thisForm">
+    <input type="hidden" name="Id" id="Id" value="{{.m.Id}}">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>归属学校</label>
+                <select name="SchoolId" id="SchoolId" class="form-control selectpicker with-ajax" data-live-search="true"></select>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>教授科目</label>
+                <select name="SubjectId" id="SubjectId" class="form-control selectpicker with-ajax" data-live-search="true"></select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>教师姓名</label>
+                <input class="form-control" type="text" name="TeacherName" placeholder="请输入教师姓名" value="{{.m.TeacherName}}">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>手机号码</label>
+                <input class="form-control" type="text" name="Mobile" placeholder="请输入手机号码" value="{{.m.Mobile}}">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>性别</label>
+                <select name="Sex" id="Sex" class="form-control">
+                    <option value="0">保密</option>
+                    <option value="1">男</option>
+                    <option value="2">女</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>生日</label>
+                <input class="form-control" type="text" name="Birthday" placeholder="请输入生日" value="{{.m.Mobile}}">
+            </div>
+        </div>
+    </div>
+</form>

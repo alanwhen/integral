@@ -104,9 +104,9 @@ func (this *TeacherController) Edit() {
 	}
 
 	this.Data["m"] = m
-	this.setTpl("admin/student/edit.html", "shared/layout_pull_box.html")
+	this.setTpl("admin/teacher/edit.html", "shared/layout_pull_box.html")
 	this.LayoutSections = make(map[string]string)
-	this.LayoutSections["footer"] = "admin/student/edit_footer.html"
+	this.LayoutSections["footer"] = "admin/teacher/edit_footer.html"
 }
 
 func (this *TeacherController) Delete() {

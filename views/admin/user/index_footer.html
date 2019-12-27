@@ -105,14 +105,18 @@
             }, {
                 field: 'Mobile',
                 title: '手机号'
-            }, /*{
-                field: 'IfLock',
-                title: '状态',
+            }, {
+                field: 'Nickname',
+                title: '昵称',
                 align: 'center',
-                width: '100px',
-                sortable: true,
-                formatter:sdtheme.showEnable
-            },*/ {
+            }, {
+                field: "AddTime",
+                title: "注册时间",
+                formatter: function (value, row, index) {
+                    if (!value) return "";
+                    return date('Y-m-d H:i:s', value);
+                }
+            }, {
                 field: 'operate',
                 title: '操作',
                 align: 'center',
@@ -179,6 +183,28 @@
         }
         html.push('</div>');
         return html.join('');
+    }
+
+    function date (extra, date) {
+        date = date * 1000;
+        var D = new Date(date);
+        var time = {
+            'Y': D.getFullYear(),
+            'm': D.getMonth() + 1,
+            'd': D.getDate(),
+            'H': D.getHours(),
+            'i': D.getMinutes(),
+            's': D.getSeconds()
+        };
+        var key = Object.keys(time);
+        var _date;
+
+        for (var k of key) {
+            time[k] = time[k] < 10 ? '0' + time[k] : time[k];
+            _date = extra.replace(k, time[k]);
+            extra = _date;
+        }
+        return _date;
     }
 
     function isVisible() {

@@ -13,6 +13,7 @@ type User struct {
 	Id       int64  `orm:"column(user_id)" from:"Id"`
 	Mobile   string `orm:"column(mobile)" from:"Mobile"`
 	RealName string `orm:"column(realname)" from:"RealName"`
+	Nickname string `orm:"column(nickname)" from:"Nickname"`
 	Avatar   string `orm:"column(avatar)" from:"Avatar"`
 	Sex      int    `orm:"column(sex)" from:"Sex"`
 	Password string `orm:"column(password)" from:"Password"`
